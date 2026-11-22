@@ -18,5 +18,5 @@ A concise description of the feature, fix, or enhancement implemented.
 - [ ] Strict TypeScript type check passes (`npx tsc --noEmit`)
 - [ ] ESLint check passes (`npm run lint`)
 - [ ] Next.js static production export succeeds (`npm run build`)
-- [ ] Protected folder `cad_models/a1_mini_partdesign/` has not been altered
+- [ ] Verified 100% client-side privacy (no external telemetry or tracking added)
 - [ ] Tested across modern browser (Chrome / Edge / Firefox / Safari)

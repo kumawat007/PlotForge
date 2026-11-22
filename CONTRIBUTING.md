@@ -65,6 +65,4 @@ npm run build
    - `docs:` Documentation updates
    - `perf:` Performance or TSP path optimization improvement
    - `test:` Adding or refining unit tests
-3. **Protected Folders**:
-   - `cad_models/a1_mini_partdesign/`: Contains verified physical snap mounts for the Bambu Lab A1 Mini. Do not edit existing production CAD geometry without prior maintainer discussion.
-4. **Submit PR**: Open your Pull Request against the `main` branch. Fill out the PR template with screenshots and testing notes.
+3. **Submit PR**: Open your Pull Request against the `main` branch. Fill out the PR template with screenshots and testing notes.

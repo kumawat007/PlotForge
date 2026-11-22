@@ -44,7 +44,7 @@
 └─────────────────────┘     └─────────────────────┘         └─────────────────────┘
 ```
 
-1. **3D Print the Mount**: Download the 1-piece Print-in-Place (PIP) snap-on pen mount from [MakerWorld @kumawat007](https://makerworld.com/en/@kumawat007) (or use [`cad_models/a1_mini_partdesign/`](cad_models/a1_mini_partdesign/)).
+1. **3D Print the Mount**: Download the 1-piece Print-in-Place (PIP) snap-on pen mount from [MakerWorld @kumawat007](https://makerworld.com/en/@kumawat007)
 2. **Design Your Canvas**: Open PlotForge, type single-stroke Hershey text, drag-and-drop vector SVGs, or vectorize photos.
 3. **Export & Draw**: Click **Export G-Code**. Transfer via SD card or Wi-Fi FTPS, insert your pen, and hit Print!
 
