@@ -18,7 +18,7 @@ export const CURATED_VECTORS: Record<string, CuratedVector> = {
     svg: '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect x="35" y="35" width="30" height="30" stroke="#000000" fill="none"/><line x1="10" y1="40" x2="35" y2="40" stroke="#000000"/><line x1="10" y1="50" x2="35" y2="50" stroke="#000000"/><line x1="10" y1="60" x2="35" y2="60" stroke="#000000"/><line x1="65" y1="40" x2="90" y2="40" stroke="#000000"/><line x1="65" y1="50" x2="90" y2="50" stroke="#000000"/><line x1="65" y1="60" x2="90" y2="60" stroke="#000000"/><line x1="40" y1="10" x2="40" y2="35" stroke="#000000"/><line x1="50" y1="10" x2="50" y2="35" stroke="#000000"/><line x1="60" y1="10" x2="60" y2="35" stroke="#000000"/><line x1="40" y1="65" x2="40" y2="90" stroke="#000000"/><line x1="50" y1="65" x2="50" y2="90" stroke="#000000"/><line x1="60" y1="65" x2="60" y2="90" stroke="#000000"/><circle cx="10" cy="40" r="2" stroke="#000000" fill="none"/><circle cx="90" cy="50" r="2" stroke="#000000" fill="none"/><circle cx="50" cy="90" r="2" stroke="#000000" fill="none"/><circle cx="50" cy="10" r="2" stroke="#000000" fill="none"/></svg>',
   },
   'Vernier Calibration': {
-    desc: 'Plotter squareness & line-gap test',
+    desc: 'Plotter squareness & alignment gauge',
     svg: '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect x="10" y="10" width="80" height="80" stroke="#000000" fill="none"/><rect x="25" y="25" width="50" height="50" stroke="#000000" fill="none"/><line x1="10" y1="10" x2="90" y2="90" stroke="#000000"/><line x1="90" y1="10" x2="10" y2="90" stroke="#000000"/><circle cx="50" cy="50" r="35" stroke="#000000" fill="none"/><circle cx="50" cy="50" r="10" stroke="#000000" fill="none"/></svg>',
   },
   'Guilloche Wave': {

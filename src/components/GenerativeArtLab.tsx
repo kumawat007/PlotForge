@@ -309,7 +309,7 @@ export const GenerativeArtLab: React.FC = () => {
                   }}
                   className="text-red-600 hover:underline"
                 >
-                  RESET SAMPLE
+                  CLEAR PHOTO
                 </button>
               )}
             </div>

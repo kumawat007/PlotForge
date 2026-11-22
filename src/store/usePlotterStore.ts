@@ -243,9 +243,9 @@ export const usePlotterStore = create<PlotterStore>((set, get) => {
   const initCenterX = (initSafeBedMinX + initSafeBedMaxX) / 2;
   const initCenterY = (initSafeBedMinY + initSafeBedMaxY) / 2;
 
-  const initialDemoText: DesignElement = {
-    id: 'initial_demo_text',
-    name: 'PlotForge Demo',
+  const initialTextElement: DesignElement = {
+    id: 'elem_typography_1',
+    name: 'PlotForge Studio',
     type: 'text',
     x: initCenterX,
     y: initCenterY,
@@ -254,7 +254,7 @@ export const usePlotterStore = create<PlotterStore>((set, get) => {
     rotation: 0,
     penId: initialPens[0]?.id || 'pen-1',
     visible: true,
-    textContent: 'PLOTFORGE\nPEN PLOTTER CAM',
+    textContent: 'PLOTFORGE\nPEN PLOTTER STUDIO',
     fontSizeMm: 7.5,
     charSpacingMm: 0.5,
     lineHeightMultiplier: 1.4,
@@ -262,7 +262,7 @@ export const usePlotterStore = create<PlotterStore>((set, get) => {
     fontFamily: 'hershey-simplex',
   };
 
-  const initialElements: DesignElement[] = [initialDemoText];
+  const initialElements: DesignElement[] = [initialTextElement];
   const initialRaw: Polyline[] = [];
   for (const el of initialElements) {
     initialRaw.push(...transformElementToPolylines(el, initialPreset));
@@ -353,7 +353,7 @@ export const usePlotterStore = create<PlotterStore>((set, get) => {
     pens: initialPens,
     activePenId: initialPens[0]?.id || 'pen-1',
     elements: initialElements,
-    selectedElementId: initialDemoText.id,
+    selectedElementId: initialTextElement.id,
     canUndo: false,
     canRedo: false,
     history: [JSON.parse(JSON.stringify(initialElements))],
