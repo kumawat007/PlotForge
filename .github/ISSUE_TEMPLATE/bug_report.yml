@@ -1,0 +1,72 @@
+name: 🐛 Bug Report
+description: Create a report to help us fix an issue in PlotForge
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report an issue! Please verify you are using the latest version of PlotForge.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the bug
+      description: A clear and concise description of what happened.
+      placeholder: When I import an SVG, the path...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: printer
+    attributes:
+      label: Target 3D Printer / Firmware
+      options:
+        - Bambu Lab A1 Mini (180x180)
+        - Bambu Lab A1 (256x256)
+        - Ender 3 / Marlin
+        - Prusa i3 / MK4
+        - CoreXY / Klipper
+        - Other / CNC Plotter
+    validations:
+      required: true
+
+  - type: dropdown
+    id: browser
+    attributes:
+      label: Browser Environment
+      options:
+        - Google Chrome
+        - Microsoft Edge
+        - Mozilla Firefox
+        - Apple Safari
+        - Brave / Other Chromium
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps To Reproduce
+      description: How can we reproduce this behavior?
+      placeholder: |
+        1. Open Studio
+        2. Go to 'SVG/Img' tab
+        3. Upload file...
+        4. See error...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What did you expect to happen?
+    validations:
+      required: true
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots or Error Logs
+      description: Drag & drop screenshots or console error traces here.
