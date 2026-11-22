@@ -1,0 +1,176 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  --bg-chassis: #F8FAFC;
+  --bg-panel: #FFFFFF;
+  --bg-elevated: #F1F5F9;
+  --bg-canvas: #F8FAFC;
+  --border-hairline: #E2E8F0;
+  --border-focus: #3B82F6;
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --text-telemetry: #64748B;
+  --accent-field-orange: #EA580C;
+  --accent-laser-cyan: #0284C7;
+  --accent-amber-warn: #D97706;
+  --accent-hazard-red: #DC2626;
+  --accent-signal-green: #059669;
+
+  /* 2026 Soft Ambient Shadows */
+  --shadow-soft-xs: 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-soft-sm: 0 2px 8px -2px rgba(15, 23, 42, 0.05), 0 1px 4px -1px rgba(15, 23, 42, 0.03);
+  --shadow-soft-md: 0 8px 24px -4px rgba(15, 23, 42, 0.06), 0 2px 6px -1px rgba(15, 23, 42, 0.03);
+  --shadow-soft-lg: 0 20px 40px -8px rgba(15, 23, 42, 0.08), 0 4px 12px -2px rgba(15, 23, 42, 0.04);
+  --shadow-glass: 0 8px 32px 0 rgba(15, 23, 42, 0.06), inset 0 1px 0 0 rgba(255, 255, 255, 0.8);
+}
+
+body {
+  color: var(--text-primary);
+  background: var(--bg-chassis);
+  overflow: hidden;
+  letter-spacing: -0.012em;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Modern Silky Smooth Scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #CBD5E1 #F8FAFC;
+}
+
+@supports not (scrollbar-color: auto) {
+  ::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #CBD5E1;
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #94A3B8;
+  }
+}
+
+/* Tactile Micro-Interactions */
+.tactile-btn {
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+.tactile-btn:hover {
+  transform: translateY(-0.5px);
+  box-shadow: 0 3px 6px -1px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+.tactile-btn:active {
+  transform: translateY(0.5px) scale(0.98);
+  box-shadow: 0 0 1px rgba(15, 23, 42, 0.12), inset 0 1px 2px rgba(15, 23, 42, 0.06);
+}
+
+/* Glassmorphic Surfaces */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+.glass-pill {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  box-shadow: var(--shadow-glass);
+}
+
+/* Soft Dot Matrix Canvas Background */
+.dot-matrix-bg {
+  background-image: radial-gradient(#CBD5E1 1px, transparent 1px);
+  background-size: 18px 18px;
+}
+
+/* Silk-screen micro labels */
+.silk-label {
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-telemetry);
+}
+
+/* Status LED Pulse Animation */
+@keyframes status-led-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: drop-shadow(0 0 4px currentColor);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(0.9);
+    filter: drop-shadow(0 0 1px currentColor);
+  }
+}
+
+.animate-status-led {
+  animation: status-led-pulse 2s infinite ease-in-out;
+}
+
+/* Custom Sleek Range Sliders */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: #E2E8F0;
+  border-radius: 9999px;
+  outline: none;
+  height: 6px;
+  transition: background 0.15s ease;
+}
+
+input[type="range"]:hover {
+  background: #CBD5E1;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #EA580C;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.2), 0 0 0 2px #FFFFFF;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.18);
+  box-shadow: 0 2px 6px rgba(234, 88, 12, 0.35), 0 0 0 2px #FFFFFF;
+}
+
+input[type="range"]::-webkit-slider-thumb:active {
+  transform: scale(1.05);
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #EA580C;
+  cursor: pointer;
+  border: 2px solid #FFFFFF;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.2);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+input[type="range"]::-moz-range-thumb:hover {
+  transform: scale(1.18);
+  box-shadow: 0 2px 6px rgba(234, 88, 12, 0.35);
+}
