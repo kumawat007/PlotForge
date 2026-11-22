@@ -263,22 +263,20 @@ export const PreflightModal: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setTransferMode('sd')}
-                    className={`px-3 py-1 rounded-md transition ${
-                      transferMode === 'sd'
+                    className={`px-3 py-1 rounded-md transition ${transferMode === 'sd'
                         ? 'bg-white text-slate-900 font-bold shadow-xs'
                         : 'text-slate-500 hover:text-slate-900'
-                    }`}
+                      }`}
                   >
                     SD / Bambu Studio
                   </button>
                   <button
                     type="button"
                     onClick={() => setTransferMode('wifi')}
-                    className={`px-3 py-1 rounded-md transition flex items-center gap-1.5 ${
-                      transferMode === 'wifi'
+                    className={`px-3 py-1 rounded-md transition flex items-center gap-1.5 ${transferMode === 'wifi'
                         ? 'bg-white text-blue-600 font-bold shadow-xs'
                         : 'text-slate-500 hover:text-slate-900'
-                    }`}
+                      }`}
                   >
                     <Wifi className="w-3.5 h-3.5 text-blue-600" />
                     <span>Wi-Fi Direct (FTP)</span>
@@ -413,11 +411,10 @@ export const PreflightModal: React.FC = () => {
             <button
               onClick={handleDownload}
               disabled={!allChecked}
-              className={`flex items-center gap-2 px-5 py-2 rounded-lg text-xs font-bold font-mono uppercase tracking-wider transition-all shadow-sm ${
-                allChecked
+              className={`flex items-center gap-2 px-5 py-2 rounded-lg text-xs font-bold font-mono uppercase tracking-wider transition-all shadow-sm ${allChecked
                   ? 'bg-[#EA580C] hover:bg-[#C2410C] text-white cursor-pointer hover:scale-[1.02] active:scale-[0.98]'
                   : 'bg-slate-200 text-slate-400 cursor-not-allowed opacity-70'
-              }`}
+                }`}
             >
               <Download className="w-4 h-4" />
               <span>
