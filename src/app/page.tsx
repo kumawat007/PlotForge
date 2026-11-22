@@ -12,11 +12,14 @@ import { CommandPalette } from '@/components/CommandPalette';
 import { ShareCardModal } from '@/components/ShareCardModal';
 import { WebSerialModal } from '@/components/WebSerialModal';
 import { GenerativeArtLab } from '@/components/GenerativeArtLab';
+import { StudioContextMenu } from '@/components/StudioContextMenu';
+import { LegalModal } from '@/components/LegalModal';
 import { usePlotterStore } from '@/store/usePlotterStore';
 
 export default function HomePage() {
   const {
     removeElement,
+    duplicateElement,
     selectedElementId,
     selectElement,
     togglePlay,
@@ -37,6 +40,11 @@ export default function HomePage() {
       if (e.code === 'Space') {
         e.preventDefault();
         togglePlay();
+      } else if ((e.ctrlKey || e.metaKey) && (e.key === 'd' || e.key === 'D')) {
+        if (selectedElementId) {
+          e.preventDefault();
+          duplicateElement(selectedElementId);
+        }
       } else if (e.code === 'Delete' || e.code === 'Backspace') {
         if (selectedElementId) {
           e.preventDefault();
@@ -49,7 +57,7 @@ export default function HomePage() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [togglePlay, removeElement, selectedElementId, selectElement]);
+  }, [togglePlay, removeElement, duplicateElement, selectedElementId, selectElement]);
 
   return (
     <div className="flex flex-col h-screen w-screen overflow-hidden bg-[#F8FAFC] font-sans">
@@ -78,6 +86,10 @@ export default function HomePage() {
       <CommandPalette />
       <ShareCardModal />
       <WebSerialModal isOpen={isWebSerialOpen} onClose={() => setWebSerialOpen(false)} />
+
+      {/* Custom Context Menu & Legal Modals */}
+      <StudioContextMenu />
+      <LegalModal />
     </div>
   );
 }

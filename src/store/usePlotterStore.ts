@@ -55,6 +55,7 @@ export interface PlotterStore {
   isWebSerialOpen: boolean;
   isSettingsModalOpen: boolean;
   isPreflightModalOpen: boolean;
+  isLegalModalOpen: 'privacy' | 'terms' | null;
   paperPreset: PaperPreset;
   selectedMountPresetId: string;
   activeStudioMode: 'canvas' | 'generator' | 'gcode';
@@ -80,6 +81,7 @@ export interface PlotterStore {
   setActiveStudioMode: (mode: 'canvas' | 'generator' | 'gcode') => void;
 
   addElement: (element: DesignElement) => void;
+  duplicateElement: (id: string) => void;
   addAlgorithmicArt: (
     type: 'flow' | 'spiro' | 'hilbert' | 'guilloche' | 'topo',
     options?: Record<string, any>
@@ -100,6 +102,7 @@ export interface PlotterStore {
   setWebSerialOpen: (open: boolean) => void;
   setSettingsModalOpen: (open: boolean) => void;
   setPreflightModalOpen: (open: boolean) => void;
+  setLegalModalOpen: (mode: 'privacy' | 'terms' | null) => void;
   setPaperPreset: (preset: PaperPreset) => void;
   setMountPresetId: (id: string) => void;
   autoFitAllElementsToPaper: () => void;
@@ -367,6 +370,7 @@ export const usePlotterStore = create<PlotterStore>((set, get) => {
     isWebSerialOpen: false,
     isSettingsModalOpen: false,
     isPreflightModalOpen: false,
+    isLegalModalOpen: null,
     paperPreset: initialPaper,
     selectedMountPresetId: defaultMount.id,
     activeStudioMode: 'canvas',
@@ -454,6 +458,23 @@ export const usePlotterStore = create<PlotterStore>((set, get) => {
     addElement: (element) => {
       const elements = [...get().elements, element];
       set({ selectedElementId: element.id });
+      commitHistory(elements);
+      refreshAll(elements, get().preset, get().pens, false);
+    },
+
+    duplicateElement: (id) => {
+      const elem = get().elements.find((el) => el.id === id);
+      if (!elem) return;
+      const newElem: DesignElement = {
+        ...elem,
+        id: `elem_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+        name: elem.name ? `${elem.name} (Copy)` : 'Copy',
+        x: elem.x + 5,
+        y: elem.y + 5,
+        locked: false,
+      };
+      const elements = [...get().elements, newElem];
+      set({ selectedElementId: newElem.id });
       commitHistory(elements);
       refreshAll(elements, get().preset, get().pens, false);
     },
@@ -732,6 +753,10 @@ export const usePlotterStore = create<PlotterStore>((set, get) => {
 
     setPreflightModalOpen: (open) => {
       set({ isPreflightModalOpen: open });
+    },
+
+    setLegalModalOpen: (mode) => {
+      set({ isLegalModalOpen: mode });
     },
 
     setPaperPreset: (paper) => {

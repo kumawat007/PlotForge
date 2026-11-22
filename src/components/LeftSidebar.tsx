@@ -104,6 +104,7 @@ export const LeftSidebar: React.FC = () => {
     assignElementPen,
     preset,
     paperPreset,
+    setLegalModalOpen,
   } = usePlotterStore();
 
   const [activeTab, setActiveTab] = useState<'text' | 'svg' | 'draw' | 'art' | 'pens'>('text');
@@ -1801,9 +1802,25 @@ export const LeftSidebar: React.FC = () => {
       </div>
 
       {/* Minimal Footer */}
-      <div className="px-3.5 py-2 border-t border-slate-200/60 bg-slate-50/50 flex items-center justify-between text-[10px] font-mono text-slate-400 shrink-0">
-        <span>PlotForge Studio</span>
-        <span className="text-slate-400">100% Client-Side</span>
+      <div className="px-3 py-2 border-t border-slate-200/60 bg-slate-50/50 flex items-center justify-between text-[10px] font-mono text-slate-400 shrink-0">
+        <span className="truncate">PlotForge Studio</span>
+        <div className="flex items-center gap-1.5 shrink-0">
+          <button
+            type="button"
+            onClick={() => setLegalModalOpen('privacy')}
+            className="hover:text-slate-700 transition cursor-pointer"
+          >
+            Privacy
+          </button>
+          <span>·</span>
+          <button
+            type="button"
+            onClick={() => setLegalModalOpen('terms')}
+            className="hover:text-slate-700 transition cursor-pointer"
+          >
+            Terms
+          </button>
+        </div>
       </div>
 
       {/* Side-by-Side PicSVG Studio Modal */}

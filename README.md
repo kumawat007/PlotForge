@@ -15,7 +15,7 @@
 <br />
 
 <p align="center">
-  <a href="http://localhost:3000"><b>🚀 Launch Studio</b></a> •
+  <a href="https://plotforge-studio.pages.dev"><b>🚀 Launch Live Studio</b></a> •
   <a href="https://makerworld.com/en/@kumawat007"><b>📦 Download 3D Mounts</b></a> •
   <a href="#-quick-3-step-workflow"><b>⚡ Quick Start</b></a> •
   <a href="#-why-plotforge"><b>💡 Why PlotForge</b></a> •
@@ -24,7 +24,7 @@
 
 <br />
 
-<a href="http://localhost:3000">
+<a href="https://plotforge-studio.pages.dev">
   <img src=".github/assets/plotforge_hero.png" alt="PlotForge Studio Desktop Interface" width="100%" style="border-radius: 12px; box-shadow: 0 12px 32px rgba(15,23,42,0.12);" />
 </a>
 
@@ -115,12 +115,13 @@ Reduces plotting time and pen wear by reordering thousands of disconnected vecto
 
 ---
 
-## 🛡️ Security & GDPR Compliance
+## 🛡️ Security, Privacy & Terms
 
 PlotForge is architected strictly under **Privacy-by-Design** principles:
 - **Zero Server Processing**: 100% of vector operations, image vectorization, font rendering, and G-code synthesis run client-side inside your browser's Web Worker threads.
 - **Zero Remote Storage**: Your photos, artwork, and CAD files never leave your device.
 - **Zero Tracking**: No tracking cookies, third-party analytics, or behavioral telemetry.
+- **Full Legal Policies**: Read our [Privacy Policy](https://plotforge-studio.pages.dev/privacy) and [Terms of Service](https://plotforge-studio.pages.dev/terms).
 
 ---
 
