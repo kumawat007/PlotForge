@@ -200,6 +200,66 @@ function createSlantedFont(base: HersheyFont, slant: number = 0.26): HersheyFont
   return result;
 }
 
+export interface FontTransformOptions {
+  scaleX?: number;
+  scaleY?: number;
+  slant?: number;
+  bounceY?: (char: string) => number;
+  descenderMultiplier?: number;
+  extendExit?: number;
+  letterSpacingOffset?: number;
+}
+
+/**
+ * Transforms a single-line base font into an unmistakable custom handwriting style.
+ * Adjusts proportions, slant angle, baseline bounce rhythm, and flourish tails.
+ */
+export function transformFont(base: HersheyFont, options: FontTransformOptions): HersheyFont {
+  const {
+    scaleX = 1,
+    scaleY = 1,
+    slant = 0,
+    bounceY,
+    descenderMultiplier = 1,
+    extendExit = 0,
+    letterSpacingOffset = 0,
+  } = options;
+
+  const result: HersheyFont = {};
+
+  for (const [char, glyph] of Object.entries(base)) {
+    const bounce = bounceY ? bounceY(char) : 0;
+    const baseW = glyph.width * scaleX + letterSpacingOffset + Math.round(20 * Math.abs(slant) * 0.35);
+
+    const newStrokes: [number, number][][] = glyph.strokes.map((stroke, sIdx) => {
+      return stroke.map(([gx, gy], ptIdx) => {
+        let adjY = gy;
+        if (gy < 0) {
+          adjY = gy * descenderMultiplier;
+        }
+        let adjX = gx * scaleX;
+        // Extend exit tail for signature styles on last point of primary stroke
+        if (sIdx === 0 && ptIdx === stroke.length - 1 && extendExit > 0 && gy <= 4) {
+          adjX += extendExit;
+        }
+
+        // Apply slant and vertical bounce
+        const slantedX = adjX + adjY * slant;
+        const finalY = (adjY + bounce) * scaleY;
+
+        return [Math.round(slantedX * 10) / 10, Math.round(finalY * 10) / 10];
+      });
+    });
+
+    result[char] = {
+      width: Math.max(6, Math.round(baseW + (extendExit > 0 ? extendExit * 0.5 : 0))),
+      strokes: newStrokes,
+    };
+  }
+
+  return result;
+}
+
 // 3. Hershey Drafting (Architectural Blueprint CAD Lettering - Fast, Clean, Geometric)
 export const HERSHEY_DRAFTING: HersheyFont = {
   ...HERSHEY_SIMPLEX,
@@ -375,157 +435,54 @@ export const HANDWRITING_ARCHITECT: HersheyFont = {
 };
 
 // 9. Elegant Signature Cursive (Single Line / Open Contour - Flowing Ligatures, Sweeping Strokes)
-export const HANDWRITING_SIGNATURE: HersheyFont = {
-  ...HERSHEY_SCRIPT,
-  // Slanted flowing handwriting flourishes
-  'A': { width: 22, strokes: [[[2, 4], [5, 15], [11, 21], [15, 17], [12, 7], [6, 4], [12, 4], [16, 21], [19, 0], [21, 2]]] },
-  'B': { width: 20, strokes: [[[5, 21], [4, 0]], [[4, 21], [13, 21], [16, 17], [15, 12], [10, 11], [4, 11]], [[10, 11], [16, 10], [17, 4], [14, 0], [7, 0], [3, 1]]] },
-  'C': { width: 19, strokes: [[[17, 18], [13, 21], [7, 20], [4, 14], [3, 8], [5, 2], [10, 0], [15, 0], [18, 3]]] },
-  'D': { width: 20, strokes: [[[5, 21], [4, 0]], [[4, 21], [12, 21], [17, 16], [18, 8], [15, 1], [9, 0], [3, 0]]] },
-  'E': { width: 18, strokes: [[[16, 20], [10, 21], [5, 17], [5, 12], [10, 11], [14, 11]], [[10, 11], [5, 10], [3, 5], [4, 1], [10, 0], [16, 1]]] },
-  'F': { width: 18, strokes: [[[4, 21], [16, 21]], [[10, 21], [8, 11], [6, 0], [4, -4]], [[5, 12], [14, 12]]] },
-  'G': { width: 20, strokes: [[[17, 18], [13, 21], [7, 20], [3, 14], [2, 8], [4, 2], [9, 0], [15, 0], [18, 5], [18, 11], [12, 11]]] },
-  'H': { width: 22, strokes: [[[6, 21], [3, 0]], [[18, 21], [15, 0]], [[4, 11], [17, 11]]] },
-  'I': { width: 14, strokes: [[[3, 20], [8, 21], [12, 18], [8, 11], [5, 2], [8, 0], [12, 1]]] },
-  'J': { width: 16, strokes: [[[5, 21], [13, 21]], [[9, 21], [9, 3], [7, -4], [4, -6], [1, -5]]] },
-  'K': { width: 20, strokes: [[[5, 21], [3, 0]], [[17, 20], [7, 10]], [[10, 11], [17, 0], [19, 2]]] },
-  'L': { width: 18, strokes: [[[8, 21], [5, 11], [3, 2], [6, 0], [15, 0], [18, 3]]] },
-  'M': { width: 26, strokes: [[[2, 12], [5, 21], [8, 0], [14, 20], [19, 0], [23, 18], [25, 4]]] },
-  'N': { width: 20, strokes: [[[3, 12], [6, 21], [13, 0], [16, 17], [18, 21]]] },
-  'O': { width: 20, strokes: [[[11, 21], [6, 20], [3, 14], [2, 8], [5, 2], [10, 0], [15, 1], [18, 7], [18, 14], [14, 20], [11, 21]]] },
-  'P': { width: 18, strokes: [[[5, 21], [3, 0]], [[5, 21], [12, 21], [16, 17], [16, 12], [12, 9], [4, 9]]] },
-  'Q': { width: 20, strokes: [[[11, 21], [6, 20], [3, 14], [2, 8], [5, 2], [10, 0], [15, 1], [18, 7], [18, 14], [14, 20], [11, 21]], [[11, 5], [18, -3]]] },
-  'R': { width: 19, strokes: [[[5, 21], [3, 0]], [[5, 21], [12, 21], [16, 17], [15, 12], [11, 9], [4, 9]], [[10, 9], [16, 0], [18, 2]]] },
-  'S': { width: 18, strokes: [[[3, 4], [7, 0], [12, 0], [15, 3], [15, 7], [11, 10], [6, 12], [4, 16], [6, 20], [11, 21], [15, 20]]] },
-  'T': { width: 18, strokes: [[[2, 20], [9, 21], [16, 21]], [[9, 21], [8, 11], [5, 0], [7, 0]]] },
-  'U': { width: 20, strokes: [[[4, 20], [4, 6], [7, 1], [13, 0], [16, 3], [17, 18], [17, 2]]] },
-  'V': { width: 18, strokes: [[[2, 19], [6, 12], [9, 0], [15, 18], [17, 21]]] },
-  'W': { width: 24, strokes: [[[2, 19], [6, 0], [11, 15], [16, 0], [21, 20]]] },
-  'X': { width: 19, strokes: [[[3, 19], [15, 0]], [[15, 19], [3, 0]]] },
-  'Y': { width: 18, strokes: [[[3, 19], [5, 9], [9, 4], [14, 19]], [[9, 4], [7, -4], [3, -6]]] },
-  'Z': { width: 18, strokes: [[[3, 19], [15, 19], [5, 4], [9, 0], [15, 0]]] },
-};
+export const HANDWRITING_SIGNATURE: HersheyFont = transformFont(HERSHEY_SCRIPT, {
+  scaleX: 1.16,
+  scaleY: 1.02,
+  slant: 0.28,
+  descenderMultiplier: 1.35,
+  extendExit: 3.5,
+  letterSpacingOffset: 0.5,
+});
 
-// 10. Flighty Bouncy Script (Single Line / Open Contour - Playful, Youthful, Looped Bounce)
-export const HANDWRITING_FLIGHTY: HersheyFont = {
-  ...HERSHEY_SCRIPT,
-  'A': { width: 19, strokes: [[[2, 3], [5, 14], [10, 20], [14, 18], [13, 8], [6, 4], [11, 4], [15, 20], [17, 1], [18, 2]]] },
-  'B': { width: 17, strokes: [[[4, 20], [4, 1]], [[4, 20], [11, 20], [14, 17], [13, 13], [9, 11], [4, 11]], [[9, 11], [14, 10], [15, 4], [12, 1], [6, 1], [3, 2]]] },
-  'C': { width: 17, strokes: [[[15, 16], [12, 20], [7, 20], [4, 15], [3, 9], [5, 3], [9, 1], [14, 1], [16, 4]]] },
-  'D': { width: 18, strokes: [[[4, 20], [4, 1]], [[4, 20], [10, 20], [15, 16], [16, 8], [14, 2], [9, 1], [3, 1]]] },
-  'E': { width: 16, strokes: [[[14, 19], [9, 20], [4, 17], [4, 12], [9, 11], [13, 11]], [[9, 11], [4, 10], [3, 5], [4, 2], [9, 1], [14, 2]]] },
-  'F': { width: 16, strokes: [[[3, 20], [15, 20]], [[9, 20], [8, 11], [6, 1], [4, -3]], [[4, 12], [13, 12]]] },
-  'G': { width: 18, strokes: [[[16, 17], [12, 20], [7, 20], [3, 14], [2, 8], [4, 2], [9, 1], [14, 1], [16, 6], [16, 11], [10, 11]]] },
-  'H': { width: 19, strokes: [[[5, 20], [3, 1]], [[16, 20], [14, 1]], [[4, 11], [15, 11]]] },
-  'I': { width: 12, strokes: [[[2, 19], [7, 20], [11, 18], [7, 11], [5, 3], [7, 1], [11, 2]]] },
-  'J': { width: 14, strokes: [[[4, 20], [12, 20]], [[8, 20], [8, 4], [6, -3], [4, -5], [1, -4]]] },
-  'K': { width: 18, strokes: [[[4, 20], [3, 1]], [[15, 19], [6, 10]], [[9, 11], [15, 1], [17, 3]]] },
-  'L': { width: 16, strokes: [[[7, 20], [5, 11], [3, 3], [6, 1], [13, 1], [16, 3]]] },
-  'M': { width: 23, strokes: [[[2, 12], [5, 20], [8, 1], [13, 19], [17, 1], [21, 18], [22, 5]]] },
-  'N': { width: 18, strokes: [[[3, 12], [5, 20], [12, 1], [14, 17], [16, 20]]] },
-  'O': { width: 18, strokes: [[[10, 20], [5, 19], [3, 13], [3, 8], [5, 3], [9, 1], [14, 2], [16, 7], [16, 14], [13, 19], [10, 20]]] },
-  'P': { width: 16, strokes: [[[4, 20], [3, 1]], [[4, 20], [11, 20], [14, 17], [14, 12], [10, 9], [3, 9]]] },
-  'Q': { width: 18, strokes: [[[10, 20], [5, 19], [3, 13], [3, 8], [5, 3], [9, 1], [14, 2], [16, 7], [16, 14], [13, 19], [10, 20]], [[10, 5], [16, -2]]] },
-  'R': { width: 17, strokes: [[[4, 20], [3, 1]], [[4, 20], [11, 20], [14, 17], [14, 12], [10, 9], [3, 9]], [[9, 9], [15, 1], [16, 3]]] },
-  'S': { width: 16, strokes: [[[3, 5], [6, 1], [11, 1], [14, 4], [13, 8], [10, 10], [5, 12], [4, 16], [6, 20], [10, 20], [14, 19]]] },
-  'T': { width: 16, strokes: [[[2, 20], [8, 20], [14, 20]], [[8, 20], [7, 11], [5, 1], [7, 1]]] },
-  'U': { width: 18, strokes: [[[4, 19], [4, 6], [7, 2], [12, 1], [15, 4], [15, 18], [16, 2]]] },
-  'V': { width: 16, strokes: [[[2, 18], [5, 12], [8, 1], [13, 17], [15, 20]]] },
-  'W': { width: 22, strokes: [[[2, 18], [5, 1], [10, 15], [14, 1], [19, 19]]] },
-  'X': { width: 17, strokes: [[[3, 18], [14, 1]], [[14, 18], [3, 1]]] },
-  'Y': { width: 16, strokes: [[[3, 18], [5, 9], [8, 4], [13, 18]], [[8, 4], [6, -4], [3, -5]]] },
-  'Z': { width: 16, strokes: [[[3, 18], [14, 18], [5, 4], [8, 1], [14, 1]]] },
-};
+// 10. Flighty Bouncy Script (Single Line / Open Contour - Playful, Youthful, Looped Baseline Bounce)
+export const HANDWRITING_FLIGHTY: HersheyFont = transformFont(HERSHEY_SCRIPT, {
+  scaleX: 1.14,
+  scaleY: 0.95,
+  slant: 0.08,
+  bounceY: (char) => {
+    // Distinctive playful bounce rhythm across characters
+    if ('eorsvwxz'.includes(char)) return 2.8;
+    if ('bdhklt'.includes(char)) return 0.6;
+    if ('gjpqy'.includes(char)) return -2.2;
+    return -0.4;
+  },
+  letterSpacingOffset: 1.2,
+});
 
 // 11. Quietly Rose Romantic Calligraphy (Single Line / Open Contour - Delicate, Fine-Line, Sweeping Tails)
-export const HANDWRITING_ROSE: HersheyFont = {
-  ...HERSHEY_SCRIPT,
-  'A': { width: 21, strokes: [[[1, 2], [4, 11], [9, 21], [14, 18], [11, 8], [6, 4], [11, 4], [16, 21], [18, 0], [20, 2]]] },
-  'B': { width: 19, strokes: [[[4, 21], [4, 0]], [[4, 21], [12, 21], [16, 17], [14, 12], [9, 11], [4, 11]], [[9, 11], [15, 10], [16, 4], [13, 0], [6, 0], [2, 1]]] },
-  'C': { width: 18, strokes: [[[16, 18], [12, 21], [7, 20], [4, 15], [3, 9], [5, 2], [10, 0], [15, 0], [18, 3]]] },
-  'D': { width: 19, strokes: [[[4, 21], [4, 0]], [[4, 21], [12, 21], [16, 16], [17, 8], [14, 1], [9, 0], [3, 0]]] },
-  'E': { width: 17, strokes: [[[15, 20], [10, 21], [5, 18], [5, 13], [10, 11], [13, 11]], [[10, 11], [5, 10], [3, 5], [4, 1], [9, 0], [15, 1]]] },
-  'F': { width: 17, strokes: [[[3, 21], [15, 21]], [[9, 21], [8, 11], [6, 0], [4, -5]], [[4, 12], [13, 12]]] },
-  'G': { width: 19, strokes: [[[16, 18], [12, 21], [7, 20], [3, 15], [2, 9], [4, 2], [9, 0], [14, 0], [17, 5], [17, 11], [11, 11]]] },
-  'H': { width: 20, strokes: [[[5, 21], [3, 0]], [[17, 21], [15, 0]], [[4, 11], [16, 11]]] },
-  'I': { width: 13, strokes: [[[2, 20], [7, 21], [11, 19], [8, 12], [5, 3], [7, 0], [11, 1]]] },
-  'J': { width: 15, strokes: [[[4, 21], [12, 21]], [[8, 21], [8, 4], [6, -4], [4, -6], [1, -5]]] },
-  'K': { width: 19, strokes: [[[4, 21], [3, 0]], [[16, 20], [6, 10]], [[9, 11], [16, 0], [18, 2]]] },
-  'L': { width: 17, strokes: [[[7, 21], [5, 11], [3, 2], [6, 0], [14, 0], [17, 3]]] },
-  'M': { width: 25, strokes: [[[2, 12], [5, 21], [8, 0], [14, 20], [19, 0], [22, 19], [24, 4]]] },
-  'N': { width: 19, strokes: [[[3, 12], [5, 21], [12, 0], [15, 18], [17, 21]]] },
-  'O': { width: 19, strokes: [[[10, 21], [6, 20], [3, 14], [2, 8], [5, 2], [9, 0], [14, 1], [17, 7], [17, 14], [14, 20], [10, 21]]] },
-  'P': { width: 17, strokes: [[[4, 21], [3, 0]], [[4, 21], [11, 21], [15, 17], [15, 12], [11, 9], [3, 9]]] },
-  'Q': { width: 19, strokes: [[[10, 21], [6, 20], [3, 14], [2, 8], [5, 2], [9, 0], [14, 1], [17, 7], [17, 14], [14, 20], [10, 21]], [[10, 5], [17, -2]]] },
-  'R': { width: 18, strokes: [[[4, 21], [3, 0]], [[4, 21], [11, 21], [15, 17], [14, 12], [10, 9], [3, 9]], [[9, 9], [15, 0], [17, 2]]] },
-  'S': { width: 17, strokes: [[[3, 4], [7, 0], [12, 0], [15, 3], [14, 7], [10, 10], [5, 12], [4, 16], [5, 20], [10, 21], [15, 20]]] },
-  'T': { width: 17, strokes: [[[2, 20], [9, 21], [16, 21]], [[9, 21], [8, 11], [5, 0], [7, 0]]] },
-  'U': { width: 19, strokes: [[[4, 20], [4, 6], [7, 1], [12, 0], [15, 3], [16, 18], [16, 2]]] },
-  'V': { width: 17, strokes: [[[2, 19], [6, 12], [9, 0], [14, 18], [16, 21]]] },
-  'W': { width: 23, strokes: [[[2, 19], [6, 0], [11, 15], [16, 0], [20, 20]]] },
-  'X': { width: 18, strokes: [[[3, 19], [15, 0]], [[15, 19], [3, 0]]] },
-  'Y': { width: 17, strokes: [[[3, 19], [5, 9], [9, 4], [14, 19]], [[9, 4], [7, -4], [3, -6]]] },
-  'Z': { width: 17, strokes: [[[3, 19], [15, 19], [5, 4], [8, 0], [15, 0]]] },
-};
+export const HANDWRITING_ROSE: HersheyFont = transformFont(HERSHEY_SCRIPT, {
+  scaleX: 0.88,
+  scaleY: 1.12,
+  slant: 0.38, // Dramatic 20° calligraphy slant
+  descenderMultiplier: 1.75, // Plunging romantic descender flourishes
+  extendExit: 4.0,
+  letterSpacingOffset: 0.5,
+});
 
-// 12. Antically Chic Monoline Script (Single Line / Open Contour - Sleek, Continuous, Modern Fine Line)
-export const HANDWRITING_ANTICALLY: HersheyFont = {
-  ...HERSHEY_SCRIPT,
-  'A': { width: 20, strokes: [[[2, 2], [6, 15], [11, 20], [15, 17], [12, 6], [6, 3], [11, 3], [15, 20], [18, 0], [20, 2]]] },
-  'B': { width: 18, strokes: [[[4, 20], [4, 0]], [[4, 20], [11, 20], [15, 17], [14, 12], [10, 11], [4, 11]], [[10, 11], [15, 10], [15, 4], [12, 0], [6, 0], [3, 1]]] },
-  'C': { width: 18, strokes: [[[16, 17], [12, 20], [7, 20], [4, 15], [3, 9], [5, 2], [9, 0], [14, 0], [17, 3]]] },
-  'D': { width: 18, strokes: [[[4, 20], [4, 0]], [[4, 20], [11, 20], [15, 16], [16, 8], [13, 1], [8, 0], [3, 0]]] },
-  'E': { width: 16, strokes: [[[14, 19], [9, 20], [4, 17], [4, 12], [9, 11], [13, 11]], [[9, 11], [4, 10], [3, 5], [4, 1], [9, 0], [14, 1]]] },
-  'F': { width: 16, strokes: [[[3, 20], [15, 20]], [[9, 20], [8, 11], [6, 0], [4, -4]], [[4, 11], [13, 11]]] },
-  'G': { width: 18, strokes: [[[16, 17], [12, 20], [7, 20], [3, 14], [2, 8], [4, 2], [8, 0], [13, 0], [16, 5], [16, 10], [11, 10]]] },
-  'H': { width: 19, strokes: [[[5, 20], [3, 0]], [[16, 20], [14, 0]], [[4, 10], [15, 10]]] },
-  'I': { width: 13, strokes: [[[2, 19], [7, 20], [11, 18], [7, 11], [5, 2], [7, 0], [11, 1]]] },
-  'J': { width: 14, strokes: [[[4, 20], [12, 20]], [[8, 20], [8, 4], [6, -4], [4, -6], [1, -5]]] },
-  'K': { width: 18, strokes: [[[4, 20], [3, 0]], [[15, 19], [6, 9]], [[9, 10], [15, 0], [17, 2]]] },
-  'L': { width: 16, strokes: [[[7, 20], [5, 10], [3, 2], [6, 0], [13, 0], [16, 3]]] },
-  'M': { width: 23, strokes: [[[2, 12], [5, 20], [8, 0], [13, 19], [17, 0], [21, 18], [22, 4]]] },
-  'N': { width: 18, strokes: [[[3, 12], [5, 20], [12, 0], [15, 17], [16, 20]]] },
-  'O': { width: 18, strokes: [[[10, 20], [5, 19], [3, 13], [3, 8], [5, 2], [9, 0], [13, 1], [16, 6], [16, 13], [13, 19], [10, 20]]] },
-  'P': { width: 16, strokes: [[[4, 20], [3, 0]], [[4, 20], [11, 20], [14, 17], [14, 12], [10, 9], [3, 9]]] },
-  'Q': { width: 18, strokes: [[[10, 20], [5, 19], [3, 13], [3, 8], [5, 2], [9, 0], [13, 1], [16, 6], [16, 13], [13, 19], [10, 20]], [[10, 4], [16, -2]]] },
-  'R': { width: 17, strokes: [[[4, 20], [3, 0]], [[4, 20], [11, 20], [14, 17], [14, 12], [10, 9], [3, 9]], [[9, 9], [15, 0], [17, 2]]] },
-  'S': { width: 16, strokes: [[[3, 4], [6, 0], [11, 0], [14, 3], [14, 7], [10, 10], [6, 12], [4, 15], [5, 19], [10, 20], [14, 19]]] },
-  'T': { width: 16, strokes: [[[2, 20], [8, 20], [14, 20]], [[8, 20], [7, 10], [5, 0], [7, 0]]] },
-  'U': { width: 18, strokes: [[[4, 19], [4, 5], [6, 1], [12, 0], [14, 3], [15, 18], [15, 2]]] },
-  'V': { width: 16, strokes: [[[2, 18], [5, 11], [8, 0], [13, 17], [15, 20]]] },
-  'W': { width: 22, strokes: [[[2, 18], [5, 0], [10, 14], [14, 0], [19, 19]]] },
-  'X': { width: 17, strokes: [[[3, 18], [14, 0]], [[14, 18], [3, 0]]] },
-  'Y': { width: 16, strokes: [[[3, 18], [5, 9], [8, 4], [13, 18]], [[8, 4], [6, -4], [3, -6]]] },
-  'Z': { width: 16, strokes: [[[3, 18], [14, 18], [5, 4], [8, 0], [14, 0]]] },
-};
+// 12. Antically Chic Monoline Script (Single Line / Open Contour - Sleek, Upright, Modern Fine Line)
+export const HANDWRITING_ANTICALLY: HersheyFont = transformFont(HERSHEY_SCRIPT, {
+  scaleX: 0.72, // Tall, ultra-chic condensed monoline
+  scaleY: 1.20,
+  slant: -0.04, // Modern upright stance
+  letterSpacingOffset: -1.5,
+});
 
 // 13. Monstera Tropical Signature (Single Line / Open Contour - Sweeping Curves, Artistic Signature)
-export const HANDWRITING_MONSTERA: HersheyFont = {
-  ...HERSHEY_SCRIPT,
-  'A': { width: 22, strokes: [[[1, 4], [5, 16], [12, 22], [17, 18], [13, 8], [6, 4], [13, 4], [17, 22], [20, 0], [22, 2]]] },
-  'B': { width: 20, strokes: [[[4, 22], [4, 0]], [[4, 22], [13, 22], [17, 18], [16, 13], [11, 11], [4, 11]], [[11, 11], [17, 10], [17, 4], [14, 0], [7, 0], [3, 1]]] },
-  'C': { width: 19, strokes: [[[18, 19], [13, 22], [7, 21], [4, 15], [3, 8], [5, 2], [10, 0], [16, 0], [19, 3]]] },
-  'D': { width: 20, strokes: [[[4, 22], [4, 0]], [[4, 22], [13, 22], [18, 17], [18, 8], [15, 1], [9, 0], [3, 0]]] },
-  'E': { width: 18, strokes: [[[16, 21], [10, 22], [5, 18], [5, 12], [10, 11], [15, 11]], [[10, 11], [5, 10], [3, 5], [4, 1], [10, 0], [16, 1]]] },
-  'F': { width: 18, strokes: [[[3, 22], [16, 22]], [[10, 22], [8, 11], [6, 0], [4, -5]], [[4, 12], [14, 12]]] },
-  'G': { width: 20, strokes: [[[18, 19], [13, 22], [7, 21], [3, 15], [2, 8], [4, 2], [9, 0], [15, 0], [19, 5], [19, 11], [12, 11]]] },
-  'H': { width: 22, strokes: [[[5, 22], [3, 0]], [[18, 22], [15, 0]], [[4, 11], [17, 11]]] },
-  'I': { width: 14, strokes: [[[2, 21], [7, 22], [12, 19], [8, 12], [5, 2], [8, 0], [12, 1]]] },
-  'J': { width: 16, strokes: [[[4, 22], [13, 22]], [[9, 22], [9, 4], [7, -4], [4, -6], [1, -5]]] },
-  'K': { width: 20, strokes: [[[4, 22], [3, 0]], [[17, 21], [7, 10]], [[10, 11], [17, 0], [19, 2]]] },
-  'L': { width: 18, strokes: [[[8, 22], [5, 11], [3, 2], [6, 0], [15, 0], [18, 3]]] },
-  'M': { width: 26, strokes: [[[2, 13], [5, 22], [8, 0], [14, 21], [19, 0], [23, 19], [25, 4]]] },
-  'N': { width: 20, strokes: [[[3, 13], [6, 22], [13, 0], [16, 18], [18, 22]]] },
-  'O': { width: 20, strokes: [[[11, 22], [6, 21], [3, 15], [2, 8], [5, 2], [10, 0], [15, 1], [19, 7], [19, 15], [15, 21], [11, 22]]] },
-  'P': { width: 18, strokes: [[[4, 22], [3, 0]], [[4, 22], [12, 22], [16, 18], [16, 12], [12, 9], [4, 9]]] },
-  'Q': { width: 20, strokes: [[[11, 22], [6, 21], [3, 15], [2, 8], [5, 2], [10, 0], [15, 1], [19, 7], [19, 15], [15, 21], [11, 22]], [[11, 5], [18, -3]]] },
-  'R': { width: 19, strokes: [[[4, 22], [3, 0]], [[4, 22], [12, 22], [16, 18], [15, 12], [11, 9], [4, 9]], [[10, 9], [17, 0], [19, 2]]] },
-  'S': { width: 18, strokes: [[[3, 4], [7, 0], [12, 0], [16, 3], [15, 8], [11, 10], [6, 13], [4, 17], [6, 21], [11, 22], [16, 21]]] },
-  'T': { width: 18, strokes: [[[2, 21], [9, 22], [17, 22]], [[9, 22], [8, 11], [5, 0], [7, 0]]] },
-  'U': { width: 20, strokes: [[[4, 21], [4, 6], [7, 1], [13, 0], [16, 3], [17, 19], [17, 2]]] },
-  'V': { width: 18, strokes: [[[2, 20], [6, 13], [9, 0], [15, 19], [18, 22]]] },
-  'W': { width: 25, strokes: [[[2, 20], [6, 0], [12, 16], [17, 0], [22, 21]]] },
-  'X': { width: 19, strokes: [[[3, 20], [16, 0]], [[16, 20], [3, 0]]] },
-  'Y': { width: 18, strokes: [[[3, 20], [5, 10], [9, 4], [15, 20]], [[9, 4], [7, -4], [3, -6]]] },
-  'Z': { width: 18, strokes: [[[3, 20], [16, 20], [5, 4], [9, 0], [16, 0]]] },
-};
+export const HANDWRITING_MONSTERA: HersheyFont = transformFont(HERSHEY_SCRIPT, {
+  scaleX: 1.48, // Extra wide dramatic spread
+  scaleY: 0.88,
+  slant: 0.22,
+  descenderMultiplier: 1.25,
+  extendExit: 6.5, // Bold horizontal signature tails
+  letterSpacingOffset: 2.5,
+});
