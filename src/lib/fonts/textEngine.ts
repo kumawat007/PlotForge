@@ -322,108 +322,17 @@ export function renderSingleStrokeText(
       cursorX += glyph.width * scale + charSpacingMm;
     }
 
-    // Cursive ligature connection: connect consecutive lowercase glyphs within words for cursive/script fonts
-    const isCursive =
-      fontFamily === 'hershey-script' ||
-      fontFamily === 'handwriting-casual' ||
-      fontFamily === 'handwriting-signature' ||
-      fontFamily === 'handwriting-flighty' ||
-      fontFamily === 'handwriting-rose' ||
-      fontFamily === 'handwriting-antically' ||
-      fontFamily === 'handwriting-monstera';
-    if (isCursive) {
-      let i = 0;
-      while (i < renderedChars.length) {
-        if (!renderedChars[i].isLower || renderedChars[i].strokes.length === 0) {
-          // Non-lowercase or whitespace - emit strokes directly
-          for (const s of renderedChars[i].strokes) {
-            polylines.push({
-              id: `text_poly_${polylines.length + 1}`,
-              points: s,
-              penId,
-              sourceElementId,
-            });
-          }
-          i++;
-          continue;
-        }
-
-        // Find consecutive run of lowercase letters
-        let runEnd = i;
-        while (runEnd + 1 < renderedChars.length && renderedChars[runEnd + 1].isLower) {
-          runEnd++;
-        }
-
-        if (runEnd === i) {
-          // Isolated single lowercase letter
-          for (const s of renderedChars[i].strokes) {
-            polylines.push({
-              id: `text_poly_${polylines.length + 1}`,
-              points: s,
-              penId,
-              sourceElementId,
-            });
-          }
-          i++;
-          continue;
-        }
-
-        // Connect consecutive lowercase letters in this cursive word run
-        let currentConnectedBody: Point2D[] = [];
-        const secondaryStrokes: Point2D[][] = [];
-
-        for (let k = i; k <= runEnd; k++) {
-          const charData = renderedChars[k];
-          if (charData.strokes.length === 0) continue;
-
-          // strokes[0] is always the primary continuous letter body from entry tail to exit tail
-          const bodyStroke = charData.strokes[0];
-
-          // Secondary accents (e.g. i-dots, j-dots, t-crossbars, f-crossbars, x-crossbars)
-          for (let sIdx = 1; sIdx < charData.strokes.length; sIdx++) {
-            secondaryStrokes.push(charData.strokes[sIdx]);
-          }
-
-          if (currentConnectedBody.length === 0) {
-            currentConnectedBody = [...bodyStroke];
-          } else {
-            // Bridge exit tail of previous letter to entry tail of current letter
-            currentConnectedBody.push(...bodyStroke);
-          }
-        }
-
-        if (currentConnectedBody.length >= 2) {
-          polylines.push({
-            id: `text_poly_${polylines.length + 1}`,
-            points: currentConnectedBody,
-            penId,
-            sourceElementId,
-          });
-        }
-
-        // Emit accent strokes (i-dots, t-crossbars)
-        for (const sec of secondaryStrokes) {
-          polylines.push({
-            id: `text_poly_${polylines.length + 1}`,
-            points: sec,
-            penId,
-            sourceElementId,
-          });
-        }
-
-        i = runEnd + 1;
-      }
-    } else {
-      // Simplex font - emit all smoothed strokes directly
-      for (const charData of renderedChars) {
-        for (const stroke of charData.strokes) {
-          polylines.push({
-            id: `text_poly_${polylines.length + 1}`,
-            points: stroke,
-            penId,
-            sourceElementId,
-          });
-        }
+    // Emit all smoothed character strokes as clean, independent polylines
+    // Zero unintended diagonal cross-lines or pen dragging across glyphs
+    for (const charData of renderedChars) {
+      for (const stroke of charData.strokes) {
+        if (stroke.length < 2) continue;
+        polylines.push({
+          id: `text_poly_${polylines.length + 1}`,
+          points: stroke,
+          penId,
+          sourceElementId,
+        });
       }
     }
   });

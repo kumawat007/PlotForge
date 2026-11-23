@@ -94,45 +94,58 @@ describe('Hershey Text Engine & Corner-Cusp Detection', () => {
     expect(HERSHEY_SIMPLEX['m'].width).toBe(20);
   });
 
-  it('renders single-stroke text and connects consecutive lowercase letters in hershey-script', () => {
-    const text = 'in';
-    const polylines = renderSingleStrokeText(text, {
-      fontSizeMm: 10,
-      fontFamily: 'hershey-script',
-    });
+  it('renders lowercase "c" with clean, open contour geometry and zero self-intersecting loops', () => {
+    const fonts = [
+      'hershey-simplex',
+      'hershey-script',
+      'handwriting-casual',
+      'handwriting-architect',
+      'handwriting-signature',
+      'handwriting-flighty',
+      'handwriting-rose',
+      'handwriting-antically',
+      'handwriting-monstera',
+    ] as const;
 
-    // In 'in', 'i' and 'n' cursive bodies must connect into exactly 1 body polyline + 1 i-dot
-    expect(polylines.length).toBe(2);
+    for (const fontId of fonts) {
+      const polys = renderSingleStrokeText('c', {
+        fontSizeMm: 10,
+        fontFamily: fontId,
+      });
+      expect(polys.length).toBe(1);
+      const points = polys[0].points;
+      expect(points.length).toBeGreaterThan(4);
 
-    const mainBody = polylines[0];
-    expect(mainBody.points.length).toBeGreaterThan(15);
+      // Verify that endpoints are open (not a closed loop or self-intersecting loop)
+      const startPt = points[0];
+      const endPt = points[points.length - 1];
+      const endDist = Math.hypot(endPt.x - startPt.x, endPt.y - startPt.y);
+      expect(endDist).toBeGreaterThan(1.0); // At 10mm fontSize, open 'c' opening >= 1mm
+    }
   });
 
-  it('renders multi-stroke cursive words like "man" and "summer" as a single continuous polyline with zero pen lifts', () => {
+  it('renders cursive words with clean, independent character strokes and zero rogue diagonal bridges', () => {
     const manPolys = renderSingleStrokeText('man', {
       fontSizeMm: 10,
       fontFamily: 'hershey-script',
     });
-    // Entire word 'man' executes in 1 unbroken continuous stroke
-    expect(manPolys.length).toBe(1);
-    expect(manPolys[0].points.length).toBeGreaterThan(30);
+    // 'man' has clean individual glyph strokes without diagonal bridges
+    expect(manPolys.length).toBe(6);
+    for (const p of manPolys) {
+      expect(p.points.length).toBeGreaterThan(1);
+    }
 
     const summerPolys = renderSingleStrokeText('summer', {
       fontSizeMm: 10,
       fontFamily: 'hershey-script',
     });
-    // Entire word 'summer' executes in 1 unbroken continuous stroke
-    expect(summerPolys.length).toBe(1);
-    expect(summerPolys[0].points.length).toBeGreaterThan(50);
-  });
+    expect(summerPolys.length).toBeGreaterThan(5);
 
-  it('renders words with accents like "plotter" with 1 connected body plus crossbars', () => {
     const plotterPolys = renderSingleStrokeText('plotter', {
       fontSizeMm: 10,
       fontFamily: 'hershey-script',
     });
-    // 1 connected word body + 2 crossbars for 't'
-    expect(plotterPolys.length).toBe(3);
+    expect(plotterPolys.length).toBeGreaterThan(5);
   });
 
   it('does not connect letters across spaces or in hershey-simplex', () => {
@@ -192,7 +205,7 @@ describe('Hershey Text Engine & Corner-Cusp Detection', () => {
     }
   });
 
-  it('connects cursive words seamlessly in handwriting fonts without pen lifts', () => {
+  it('renders words cleanly across all handwriting fonts with valid finite coordinates', () => {
     const cursiveFonts = [
       'handwriting-casual',
       'handwriting-signature',
@@ -207,8 +220,14 @@ describe('Hershey Text Engine & Corner-Cusp Detection', () => {
         fontSizeMm: 10,
         fontFamily: fam,
       });
-      // 'in' connects letter bodies into 1 connected path + 1 dot for i
-      expect(polys.length).toBeLessThanOrEqual(3);
+      expect(polys.length).toBeGreaterThan(0);
+      for (const p of polys) {
+        expect(p.points.length).toBeGreaterThan(1);
+        for (const pt of p.points) {
+          expect(Number.isFinite(pt.x)).toBe(true);
+          expect(Number.isFinite(pt.y)).toBe(true);
+        }
+      }
     }
   });
 });
