@@ -11,7 +11,7 @@ import {
   isLocalFontAccessSupported,
 } from '@/lib/fonts/localFontManager';
 import { renderSingleStrokeText } from '@/lib/fonts/textEngine';
-import { Check, ChevronDown, FolderOpen, Laptop, Search, Loader2 } from 'lucide-react';
+import { Check, ChevronDown, FolderOpen, Laptop, Search, Loader2, ExternalLink } from 'lucide-react';
 
 export interface BuiltinFont {
   id: FontFamilyId;
@@ -22,9 +22,13 @@ export interface BuiltinFont {
 
 const BUILTIN_FONTS: BuiltinFont[] = [
   // ✍️ Single-Stroke Handwriting & Script (Open Contour)
+  { id: 'handwriting-antically', name: 'Antically Monoline', category: 'handwriting', badge: 'Fine Monoline' },
+  { id: 'handwriting-flighty', name: 'Flighty Bouncy Hand', category: 'handwriting', badge: 'Bouncy Script' },
+  { id: 'handwriting-rose', name: 'Quietly Rose Script', category: 'handwriting', badge: 'Romantic Script' },
+  { id: 'handwriting-monstera', name: 'Monstera Signature', category: 'handwriting', badge: 'Signature' },
+  { id: 'handwriting-signature', name: 'Signature Cursive', category: 'handwriting', badge: 'Cursive' },
   { id: 'handwriting-casual', name: 'Casual Note Hand', category: 'handwriting', badge: 'Handwriting' },
   { id: 'handwriting-architect', name: 'Architect Drafting Hand', category: 'handwriting', badge: 'Drafting' },
-  { id: 'handwriting-signature', name: 'Signature Cursive', category: 'handwriting', badge: 'Cursive' },
   { id: 'hershey-script', name: 'Hershey Script', category: 'handwriting', badge: 'Script' },
 
   // 📐 Single-Stroke Technical & Geometric
@@ -420,23 +424,42 @@ export const FontPicker: React.FC<FontPickerProps> = ({
                     Click PC Fonts checkbox to scan or load a .ttf file below
                   </div>
                 )}
-
-                {/* Prominent Direct File Loader */}
-                <div className="p-2 pt-1.5 border-t border-slate-100 bg-slate-50/50">
-                  <button
-                    type="button"
-                    onClick={() => fileInputRef.current?.click()}
-                    className="w-full flex items-center justify-center gap-2 py-2 px-3 bg-blue-50/90 hover:bg-blue-100 border border-blue-200/90 text-blue-700 rounded-xl text-xs font-semibold transition active:scale-98 cursor-pointer shadow-2xs"
-                  >
-                    <FolderOpen className="w-3.5 h-3.5 text-blue-600 shrink-0" />
-                    <span>+ Load Font File (.ttf, .otf, .woff)</span>
-                  </button>
-                  <p className="text-[10px] text-slate-400 text-center mt-1">
-                    Windows PC fonts are in <code className="bg-white px-1 py-0.5 rounded text-slate-600 font-mono border border-slate-200">C:\Windows\Fonts</code>
-                  </p>
-                </div>
               </div>
             )}
+          </div>
+
+          {/* Bottom Action Footer: Load custom font + Single line font directory links */}
+          <div className="p-2 border-t border-slate-100 bg-slate-50/80 space-y-1.5">
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              className="w-full flex items-center justify-center gap-2 py-1.5 px-3 bg-white hover:bg-slate-100 border border-slate-200/90 text-slate-700 hover:text-slate-900 rounded-xl text-xs font-semibold transition active:scale-98 cursor-pointer shadow-2xs"
+            >
+              <FolderOpen className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+              <span>+ Load Font File (.ttf, .otf, .woff)</span>
+            </button>
+            <div className="flex items-center justify-between px-1 text-[10px] text-slate-500">
+              <span className="font-medium text-slate-600">Free Single-Line Fonts:</span>
+              <div className="flex items-center gap-2">
+                <a
+                  href="https://www.fontspace.com/category/single-line"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:underline flex items-center gap-0.5 font-medium"
+                >
+                  FontSpace <ExternalLink className="w-2.5 h-2.5" />
+                </a>
+                <span className="text-slate-300">•</span>
+                <a
+                  href="https://www.1001fonts.com/monoline-fonts.html"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:underline flex items-center gap-0.5 font-medium"
+                >
+                  1001fonts <ExternalLink className="w-2.5 h-2.5" />
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       )}

@@ -165,11 +165,15 @@ describe('Hershey Text Engine & Corner-Cusp Detection', () => {
     }
   });
 
-  it('renders all single-line open contour handwriting fonts (casual, architect, signature)', () => {
+  it('renders all single-line open contour handwriting fonts (casual, architect, signature, flighty, rose, antically, monstera)', () => {
     const handwritingFonts = [
       'handwriting-casual',
       'handwriting-architect',
       'handwriting-signature',
+      'handwriting-flighty',
+      'handwriting-rose',
+      'handwriting-antically',
+      'handwriting-monstera',
     ] as const;
 
     for (const fam of handwritingFonts) {
@@ -188,18 +192,23 @@ describe('Hershey Text Engine & Corner-Cusp Detection', () => {
     }
   });
 
-  it('connects cursive words seamlessly in handwriting-casual and handwriting-signature without pen lifts', () => {
-    const casualPolys = renderSingleStrokeText('in', {
-      fontSizeMm: 10,
-      fontFamily: 'handwriting-casual',
-    });
-    // 'in' connects letter bodies into 1 connected path + 1 dot for i
-    expect(casualPolys.length).toBeLessThanOrEqual(3);
+  it('connects cursive words seamlessly in handwriting fonts without pen lifts', () => {
+    const cursiveFonts = [
+      'handwriting-casual',
+      'handwriting-signature',
+      'handwriting-flighty',
+      'handwriting-rose',
+      'handwriting-antically',
+      'handwriting-monstera',
+    ] as const;
 
-    const sigPolys = renderSingleStrokeText('in', {
-      fontSizeMm: 10,
-      fontFamily: 'handwriting-signature',
-    });
-    expect(sigPolys.length).toBeLessThanOrEqual(3);
+    for (const fam of cursiveFonts) {
+      const polys = renderSingleStrokeText('in', {
+        fontSizeMm: 10,
+        fontFamily: fam,
+      });
+      // 'in' connects letter bodies into 1 connected path + 1 dot for i
+      expect(polys.length).toBeLessThanOrEqual(3);
+    }
   });
 });

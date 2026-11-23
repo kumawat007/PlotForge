@@ -137,7 +137,11 @@ export type BuiltinFontFamilyId =
   | 'hershey-italic'
   | 'handwriting-casual'
   | 'handwriting-architect'
-  | 'handwriting-signature';
+  | 'handwriting-signature'
+  | 'handwriting-flighty'
+  | 'handwriting-rose'
+  | 'handwriting-antically'
+  | 'handwriting-monstera';
 
 export type FontFamilyId = BuiltinFontFamilyId | (string & {});
 

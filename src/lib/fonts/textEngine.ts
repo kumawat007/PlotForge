@@ -9,6 +9,10 @@ import {
   HANDWRITING_CASUAL,
   HANDWRITING_ARCHITECT,
   HANDWRITING_SIGNATURE,
+  HANDWRITING_FLIGHTY,
+  HANDWRITING_ROSE,
+  HANDWRITING_ANTICALLY,
+  HANDWRITING_MONSTERA,
   HersheyFont,
   HersheyGlyph,
 } from './hersheyData';
@@ -225,6 +229,18 @@ export function renderSingleStrokeText(
     case 'handwriting-signature':
       font = HANDWRITING_SIGNATURE;
       break;
+    case 'handwriting-flighty':
+      font = HANDWRITING_FLIGHTY;
+      break;
+    case 'handwriting-rose':
+      font = HANDWRITING_ROSE;
+      break;
+    case 'handwriting-antically':
+      font = HANDWRITING_ANTICALLY;
+      break;
+    case 'handwriting-monstera':
+      font = HANDWRITING_MONSTERA;
+      break;
     case 'hershey-simplex':
     default:
       font = HERSHEY_SIMPLEX;
@@ -310,7 +326,11 @@ export function renderSingleStrokeText(
     const isCursive =
       fontFamily === 'hershey-script' ||
       fontFamily === 'handwriting-casual' ||
-      fontFamily === 'handwriting-signature';
+      fontFamily === 'handwriting-signature' ||
+      fontFamily === 'handwriting-flighty' ||
+      fontFamily === 'handwriting-rose' ||
+      fontFamily === 'handwriting-antically' ||
+      fontFamily === 'handwriting-monstera';
     if (isCursive) {
       let i = 0;
       while (i < renderedChars.length) {
