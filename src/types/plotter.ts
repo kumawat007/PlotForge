@@ -141,7 +141,9 @@ export type BuiltinFontFamilyId =
   | 'handwriting-flighty'
   | 'handwriting-rose'
   | 'handwriting-antically'
-  | 'handwriting-monstera';
+  | 'handwriting-monstera'
+  | 'handwriting-backstay'
+  | 'handwriting-youth';
 
 export type FontFamilyId = BuiltinFontFamilyId | (string & {});
 

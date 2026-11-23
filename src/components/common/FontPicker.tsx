@@ -26,6 +26,8 @@ const BUILTIN_FONTS: BuiltinFont[] = [
   { id: 'handwriting-flighty', name: 'Flighty Bouncy Hand', category: 'handwriting', badge: 'Bouncy Script' },
   { id: 'handwriting-rose', name: 'Quietly Rose Script', category: 'handwriting', badge: 'Romantic Script' },
   { id: 'handwriting-monstera', name: 'Monstera Signature', category: 'handwriting', badge: 'Signature' },
+  { id: 'handwriting-backstay', name: 'Backstay Expressive', category: 'handwriting', badge: 'Expressive' },
+  { id: 'handwriting-youth', name: 'Only Youth Print', category: 'handwriting', badge: 'Youthful' },
   { id: 'handwriting-signature', name: 'Signature Cursive', category: 'handwriting', badge: 'Cursive' },
   { id: 'handwriting-casual', name: 'Casual Note Hand', category: 'handwriting', badge: 'Handwriting' },
   { id: 'handwriting-architect', name: 'Architect Drafting Hand', category: 'handwriting', badge: 'Drafting' },

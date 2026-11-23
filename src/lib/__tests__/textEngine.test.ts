@@ -105,6 +105,8 @@ describe('Hershey Text Engine & Corner-Cusp Detection', () => {
       'handwriting-rose',
       'handwriting-antically',
       'handwriting-monstera',
+      'handwriting-backstay',
+      'handwriting-youth',
     ] as const;
 
     for (const fontId of fonts) {
@@ -187,6 +189,8 @@ describe('Hershey Text Engine & Corner-Cusp Detection', () => {
       'handwriting-rose',
       'handwriting-antically',
       'handwriting-monstera',
+      'handwriting-backstay',
+      'handwriting-youth',
     ] as const;
 
     for (const fam of handwritingFonts) {
@@ -213,6 +217,10 @@ describe('Hershey Text Engine & Corner-Cusp Detection', () => {
       'handwriting-rose',
       'handwriting-antically',
       'handwriting-monstera',
+      'handwriting-backstay',
+      'handwriting-youth',
+      'handwriting-backstay',
+      'handwriting-youth',
     ] as const;
 
     for (const fam of cursiveFonts) {
@@ -228,6 +236,51 @@ describe('Hershey Text Engine & Corner-Cusp Detection', () => {
           expect(Number.isFinite(pt.y)).toBe(true);
         }
       }
+    }
+  });
+
+  it('guarantees each handwriting font produces distinctly unique visual geometry for identical input', () => {
+    const testString = 'Creative Handwriting 123';
+    const fonts = [
+      'handwriting-casual',
+      'handwriting-architect',
+      'handwriting-signature',
+      'handwriting-flighty',
+      'handwriting-rose',
+      'handwriting-antically',
+      'handwriting-monstera',
+      'handwriting-backstay',
+      'handwriting-youth',
+      'hershey-script',
+    ] as const;
+
+    const signatureSet = new Set<string>();
+
+    for (const f of fonts) {
+      const polys = renderSingleStrokeText(testString, {
+        fontSizeMm: 12,
+        fontFamily: f,
+      });
+      let totalLength = 0;
+      let minX = Infinity;
+      let maxX = -Infinity;
+      for (const p of polys) {
+        for (let i = 0; i < p.points.length - 1; i++) {
+          totalLength += Math.hypot(
+            p.points[i + 1].x - p.points[i].x,
+            p.points[i + 1].y - p.points[i].y
+          );
+        }
+        for (const pt of p.points) {
+          if (pt.x < minX) minX = pt.x;
+          if (pt.x > maxX) maxX = pt.x;
+        }
+      }
+      const width = maxX - minX;
+      // Width and stroke length signature
+      const sig = `${Math.round(width * 10)}_${Math.round(totalLength * 10)}`;
+      expect(signatureSet.has(sig)).toBe(false);
+      signatureSet.add(sig);
     }
   });
 });

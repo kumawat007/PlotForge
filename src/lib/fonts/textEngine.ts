@@ -13,6 +13,8 @@ import {
   HANDWRITING_ROSE,
   HANDWRITING_ANTICALLY,
   HANDWRITING_MONSTERA,
+  HANDWRITING_BACKSTAY,
+  HANDWRITING_YOUTH,
   HersheyFont,
   HersheyGlyph,
 } from './hersheyData';
@@ -240,6 +242,12 @@ export function renderSingleStrokeText(
       break;
     case 'handwriting-monstera':
       font = HANDWRITING_MONSTERA;
+      break;
+    case 'handwriting-backstay':
+      font = HANDWRITING_BACKSTAY;
+      break;
+    case 'handwriting-youth':
+      font = HANDWRITING_YOUTH;
       break;
     case 'hershey-simplex':
     default:

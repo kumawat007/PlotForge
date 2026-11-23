@@ -486,3 +486,24 @@ export const HANDWRITING_MONSTERA: HersheyFont = transformFont(HERSHEY_SCRIPT, {
   extendExit: 6.5, // Bold horizontal signature tails
   letterSpacingOffset: 2.5,
 });
+
+// 14. Backstay Expressive Script (Single Line / Open Contour - Energetic, Dynamic Ascenders, Sharp Slant)
+export const HANDWRITING_BACKSTAY: HersheyFont = transformFont(HERSHEY_SCRIPT, {
+  scaleX: 1.05,
+  scaleY: 1.15,
+  slant: 0.32,
+  bounceY: (char) => ('bdfhkl'.includes(char) ? 1.5 : 'gjpqy'.includes(char) ? -1.8 : 0),
+  descenderMultiplier: 1.4,
+  extendExit: 4.8,
+  letterSpacingOffset: 0.2,
+});
+
+// 15. Only Youth Playful Print-Script (Single Line / Open Contour - Friendly, Rounded, Clean)
+export const HANDWRITING_YOUTH: HersheyFont = transformFont(HANDWRITING_CASUAL, {
+  scaleX: 0.95,
+  scaleY: 0.95,
+  slant: 0.05,
+  bounceY: (char) => ('aeiou'.includes(char) ? 0.8 : 0),
+  letterSpacingOffset: 0.8,
+});
+
