@@ -11,7 +11,7 @@ import {
   isLocalFontAccessSupported,
 } from '@/lib/fonts/localFontManager';
 import { renderSingleStrokeText } from '@/lib/fonts/textEngine';
-import { Check, ChevronDown, FolderOpen, Laptop, Search, Loader2, ExternalLink } from 'lucide-react';
+import { Check, ChevronDown, FolderOpen, Laptop, Search, Loader2 } from 'lucide-react';
 
 export interface BuiltinFont {
   id: FontFamilyId;
@@ -421,45 +421,11 @@ export const FontPicker: React.FC<FontPickerProps> = ({
 
                 {uniqueSystemFamilies.length === 0 && !isScanning && !scanError && (
                   <div className="px-2 py-2 text-[10px] text-slate-400 text-center italic">
-                    Click PC Fonts checkbox to scan or load a .ttf file below
+                    Click PC Fonts checkbox above to scan installed fonts
                   </div>
                 )}
               </div>
             )}
-          </div>
-
-          {/* Bottom Action Footer: Load custom font + Single line font directory links */}
-          <div className="p-2 border-t border-slate-100 bg-slate-50/80 space-y-1.5">
-            <button
-              type="button"
-              onClick={() => fileInputRef.current?.click()}
-              className="w-full flex items-center justify-center gap-2 py-1.5 px-3 bg-white hover:bg-slate-100 border border-slate-200/90 text-slate-700 hover:text-slate-900 rounded-xl text-xs font-semibold transition active:scale-98 cursor-pointer shadow-2xs"
-            >
-              <FolderOpen className="w-3.5 h-3.5 text-blue-600 shrink-0" />
-              <span>+ Load Font File (.ttf, .otf, .woff)</span>
-            </button>
-            <div className="flex items-center justify-between px-1 text-[10px] text-slate-500">
-              <span className="font-medium text-slate-600">Free Single-Line Fonts:</span>
-              <div className="flex items-center gap-2">
-                <a
-                  href="https://www.fontspace.com/category/single-line"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 hover:underline flex items-center gap-0.5 font-medium"
-                >
-                  FontSpace <ExternalLink className="w-2.5 h-2.5" />
-                </a>
-                <span className="text-slate-300">•</span>
-                <a
-                  href="https://www.1001fonts.com/monoline-fonts.html"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 hover:underline flex items-center gap-0.5 font-medium"
-                >
-                  1001fonts <ExternalLink className="w-2.5 h-2.5" />
-                </a>
-              </div>
-            </div>
           </div>
         </div>
       )}
