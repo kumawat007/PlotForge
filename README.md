@@ -68,8 +68,13 @@ Standard 3D slicers and generic laser software were never designed for pen plott
 
 ## 🌟 Core Features
 
-### ✍️ Single-Stroke Typography & Cursive Engine
-Traditional computer fonts create hollow double outlines when plotted with a pen. PlotForge includes **native Hershey single-stroke fonts** (CAD Drafting, Classical Serif, Executive Italic, Modern Round, and Hershey Script) with intelligent cursive ligature bridging for seamless, fluid handwriting.
+### ✍️ Single-Stroke Handwriting & Cursive Engine
+Traditional computer fonts create hollow double outlines when plotted with a pen. PlotForge includes **native Single-Line / Single-Stroke (Open Contour) fonts** with zero thickness and intelligent cursive ligature bridging for seamless, fluid handwriting:
+- **Casual Note Hand**: Natural, organic notebook handwriting for letters and journals.
+- **Architect Drafting Hand**: Crisp, confident blueprint architectural lettering with wide geometric proportions.
+- **Signature Cursive**: Flowing, expressive signature script with automatic ligature connecting between letters.
+- **Classic Hershey Library**: Technical Sans, CAD Drafting, Roman Serif, Modern Soft Rounded, and Executive Italic.
+- **Crash & Reload Protection**: Built-in browser `beforeunload` guard and local storage auto-save to ensure your artwork is never lost on accidental tab reload or closure.
 
 ### 🖼️ PicSVG Photo Vectorizer Studio
 Drop any raster image (`.png`, `.jpg`, `.webp`) and convert it into crisp plotter paths using **19 dedicated filters** (Inkscape Smooth Bezier, Canny Edge, Otsu Clean, and Artistic Woodcut) paired with continuous **snake infill hatching** for solid areas.

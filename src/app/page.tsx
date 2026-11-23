@@ -18,8 +18,11 @@ import { usePlotterStore } from '@/store/usePlotterStore';
 
 export default function HomePage() {
   const {
+    elements,
+    canUndo,
     removeElement,
     duplicateElement,
+    restoreCanvasElements,
     selectedElementId,
     selectElement,
     togglePlay,
@@ -27,6 +30,48 @@ export default function HomePage() {
     setWebSerialOpen,
     activeStudioMode,
   } = usePlotterStore();
+
+  // Accidental reload & tab close protection ("Reload site? Changes you made may not be saved.")
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (elements.length > 0 || canUndo) {
+        e.preventDefault();
+        e.returnValue = ''; // Standard browser confirmation prompt
+        return '';
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [elements.length, canUndo]);
+
+  // Auto-Save Canvas State to localStorage for instant crash recovery
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    try {
+      if (elements.length > 0) {
+        localStorage.setItem('plotforge_autosaved_canvas', JSON.stringify(elements));
+      }
+    } catch {
+      // Ignore quota error
+    }
+  }, [elements]);
+
+  // Restore on Initial Mount if autosaved data exists
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    try {
+      const saved = localStorage.getItem('plotforge_autosaved_canvas');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          restoreCanvasElements(parsed);
+        }
+      }
+    } catch {
+      // Ignore parse error
+    }
+  }, [restoreCanvasElements]);
 
   // Global Keyboard Shortcuts
   useEffect(() => {

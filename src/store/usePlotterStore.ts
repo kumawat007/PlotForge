@@ -82,6 +82,7 @@ export interface PlotterStore {
 
   addElement: (element: DesignElement) => void;
   duplicateElement: (id: string) => void;
+  restoreCanvasElements: (elements: DesignElement[]) => void;
   addAlgorithmicArt: (
     type: 'flow' | 'spiro' | 'hilbert' | 'guilloche' | 'topo',
     options?: Record<string, any>
@@ -477,6 +478,16 @@ export const usePlotterStore = create<PlotterStore>((set, get) => {
       set({ selectedElementId: newElem.id });
       commitHistory(elements);
       refreshAll(elements, get().preset, get().pens, false);
+    },
+
+    restoreCanvasElements: (restoredElements) => {
+      if (!restoredElements || restoredElements.length === 0) return;
+      set({
+        elements: restoredElements,
+        selectedElementId: restoredElements[0]?.id || null,
+      });
+      commitHistory(restoredElements);
+      refreshAll(restoredElements, get().preset, get().pens, false);
     },
 
     addAlgorithmicArt: (type, options = {}) => {

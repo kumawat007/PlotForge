@@ -134,7 +134,10 @@ export type BuiltinFontFamilyId =
   | 'hershey-drafting'
   | 'hershey-serif'
   | 'hershey-soft-round'
-  | 'hershey-italic';
+  | 'hershey-italic'
+  | 'handwriting-casual'
+  | 'handwriting-architect'
+  | 'handwriting-signature';
 
 export type FontFamilyId = BuiltinFontFamilyId | (string & {});
 

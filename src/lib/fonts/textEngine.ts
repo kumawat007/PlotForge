@@ -6,6 +6,9 @@ import {
   HERSHEY_SERIF,
   HERSHEY_SOFT_ROUND,
   HERSHEY_ITALIC,
+  HANDWRITING_CASUAL,
+  HANDWRITING_ARCHITECT,
+  HANDWRITING_SIGNATURE,
   HersheyFont,
   HersheyGlyph,
 } from './hersheyData';
@@ -213,6 +216,15 @@ export function renderSingleStrokeText(
     case 'hershey-italic':
       font = HERSHEY_ITALIC;
       break;
+    case 'handwriting-casual':
+      font = HANDWRITING_CASUAL;
+      break;
+    case 'handwriting-architect':
+      font = HANDWRITING_ARCHITECT;
+      break;
+    case 'handwriting-signature':
+      font = HANDWRITING_SIGNATURE;
+      break;
     case 'hershey-simplex':
     default:
       font = HERSHEY_SIMPLEX;
@@ -294,8 +306,12 @@ export function renderSingleStrokeText(
       cursorX += glyph.width * scale + charSpacingMm;
     }
 
-    // Hershey Script cursive connection: connect consecutive lowercase glyphs within words
-    if (fontFamily === 'hershey-script') {
+    // Cursive ligature connection: connect consecutive lowercase glyphs within words for cursive/script fonts
+    const isCursive =
+      fontFamily === 'hershey-script' ||
+      fontFamily === 'handwriting-casual' ||
+      fontFamily === 'handwriting-signature';
+    if (isCursive) {
       let i = 0;
       while (i < renderedChars.length) {
         if (!renderedChars[i].isLower || renderedChars[i].strokes.length === 0) {

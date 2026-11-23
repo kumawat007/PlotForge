@@ -16,15 +16,23 @@ import { Check, ChevronDown, FolderOpen, Laptop, Search, Loader2 } from 'lucide-
 export interface BuiltinFont {
   id: FontFamilyId;
   name: string;
+  category?: 'handwriting' | 'technical';
+  badge?: string;
 }
 
 const BUILTIN_FONTS: BuiltinFont[] = [
-  { id: 'hershey-soft-round', name: 'Modern Soft Rounded' },
-  { id: 'hershey-simplex', name: 'Technical Sans' },
-  { id: 'hershey-drafting', name: 'Architect CAD' },
-  { id: 'hershey-serif', name: 'Roman Serif' },
-  { id: 'hershey-italic', name: 'Executive Italic' },
-  { id: 'hershey-script', name: 'Hershey Script' },
+  // ✍️ Single-Stroke Handwriting & Script (Open Contour)
+  { id: 'handwriting-casual', name: 'Casual Note Hand', category: 'handwriting', badge: 'Handwriting' },
+  { id: 'handwriting-architect', name: 'Architect Drafting Hand', category: 'handwriting', badge: 'Drafting' },
+  { id: 'handwriting-signature', name: 'Signature Cursive', category: 'handwriting', badge: 'Cursive' },
+  { id: 'hershey-script', name: 'Hershey Script', category: 'handwriting', badge: 'Script' },
+
+  // 📐 Single-Stroke Technical & Geometric
+  { id: 'hershey-soft-round', name: 'Modern Soft Rounded', category: 'technical', badge: 'Single Line' },
+  { id: 'hershey-simplex', name: 'Technical Sans', category: 'technical', badge: 'Single Line' },
+  { id: 'hershey-drafting', name: 'Architect CAD', category: 'technical', badge: 'Single Line' },
+  { id: 'hershey-serif', name: 'Roman Serif', category: 'technical', badge: 'Single Line' },
+  { id: 'hershey-italic', name: 'Executive Italic', category: 'technical', badge: 'Single Line' },
 ];
 
 /**
@@ -302,6 +310,10 @@ export const FontPicker: React.FC<FontPickerProps> = ({
           <div className="max-h-[260px] overflow-y-auto p-1.5 space-y-0.5 divide-y divide-slate-100/60 font-sans">
             {/* Built-in Single Stroke Fonts */}
             <div className="space-y-0.5 pb-1">
+              <div className="px-2 py-0.5 text-[9px] font-bold text-slate-400 uppercase tracking-wider font-mono flex items-center justify-between">
+                <span>Single-Stroke (Open Contour)</span>
+                <span className="text-emerald-600 bg-emerald-50 px-1 py-0.2 rounded font-mono">0-Thickness</span>
+              </div>
               {BUILTIN_FONTS.filter((f) =>
                 searchQuery ? f.name.toLowerCase().includes(searchQuery.toLowerCase()) : true
               ).map((f) => {
@@ -319,7 +331,20 @@ export const FontPicker: React.FC<FontPickerProps> = ({
                         : 'hover:bg-slate-50 text-slate-800'
                     }`}
                   >
-                    <HersheyNameSvg fontId={f.id} name={f.name} />
+                    <div className="flex items-center gap-2">
+                      <HersheyNameSvg fontId={f.id} name={f.name} />
+                      {f.badge && (
+                        <span
+                          className={`text-[9px] px-1 py-0.2 rounded font-mono font-medium ${
+                            f.category === 'handwriting'
+                              ? 'bg-amber-50 text-amber-700 border border-amber-200/50'
+                              : 'bg-slate-100 text-slate-600'
+                          }`}
+                        >
+                          {f.badge}
+                        </span>
+                      )}
+                    </div>
                     {isSelected && <Check className="w-3.5 h-3.5 text-blue-600 shrink-0" />}
                   </div>
                 );
