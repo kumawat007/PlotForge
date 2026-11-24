@@ -23,7 +23,14 @@ import {
   EMS_ELFIN,
   EMS_FELIX,
   EMS_READABILITY,
+  EMS_READABILITY_ITALIC,
   EMS_TECH,
+  EMS_NIXISH,
+  EMS_NIXISH_ITALIC,
+  EMS_OSMOTRON,
+  HERSHEY_GOTH_ENGLISH,
+  HERSHEY_SCRIPT_MED,
+  HERSHEY_SERIF_MED,
 } from './emsFontsData';
 import { pointToSegmentDistance } from '../svg/bezier';
 import { getParsedFont, renderOpenTypeText } from './localFontManager';
@@ -227,41 +234,42 @@ export function renderSingleStrokeText(
     case 'handwriting-antically':
       font = EMS_FELIX;
       break;
+    case 'ems-nixish':
+    case 'handwriting-youth':
+      font = EMS_NIXISH;
+      break;
+    case 'ems-nixish-italic':
+    case 'handwriting-backstay':
+      font = EMS_NIXISH_ITALIC;
+      break;
+    case 'handwriting-monstera':
+    case 'hershey-script':
+      font = HERSHEY_SCRIPT_MED;
+      break;
+    case 'ems-osmotron':
+      font = EMS_OSMOTRON;
+      break;
+    case 'gothic-english':
+      font = HERSHEY_GOTH_ENGLISH;
+      break;
     case 'ems-readability':
+    case 'hershey-soft-round':
       font = EMS_READABILITY;
       break;
+    case 'ems-readability-italic':
+    case 'handwriting-casual':
+      font = EMS_READABILITY_ITALIC;
+      break;
     case 'ems-tech':
+    case 'hershey-drafting':
+    case 'handwriting-architect':
       font = EMS_TECH;
       break;
-    case 'hershey-script':
-      font = HERSHEY_SCRIPT;
-      break;
-    case 'hershey-drafting':
-      font = HERSHEY_DRAFTING;
-      break;
     case 'hershey-serif':
-      font = HERSHEY_SERIF;
-      break;
-    case 'hershey-soft-round':
-      font = HERSHEY_SOFT_ROUND;
+      font = HERSHEY_SERIF_MED;
       break;
     case 'hershey-italic':
       font = HERSHEY_ITALIC;
-      break;
-    case 'handwriting-casual':
-      font = HANDWRITING_CASUAL;
-      break;
-    case 'handwriting-architect':
-      font = HANDWRITING_ARCHITECT;
-      break;
-    case 'handwriting-monstera':
-      font = HANDWRITING_MONSTERA;
-      break;
-    case 'handwriting-backstay':
-      font = HANDWRITING_BACKSTAY;
-      break;
-    case 'handwriting-youth':
-      font = HANDWRITING_YOUTH;
       break;
     case 'hershey-simplex':
     default:

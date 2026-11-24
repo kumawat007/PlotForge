@@ -21,29 +21,23 @@ export interface BuiltinFont {
 }
 
 const BUILTIN_FONTS: BuiltinFont[] = [
-  // ✍️ Single-Stroke Calligraphy & Handwriting (Open Contour - AxiDraw & Pen Plotter)
+  // ✍️ Authentic Single-Stroke Calligraphy & Handwriting (Open Contour)
   { id: 'ems-allure', name: 'Allura Cursive Script', category: 'handwriting', badge: 'True Cursive' },
-  { id: 'ems-elfin', name: 'Elfin Calligraphic Hand', category: 'handwriting', badge: 'Calligraphy' },
+  { id: 'ems-elfin', name: 'Elfin Calligraphic Hand', category: 'handwriting', badge: 'Broad-Nib Calligraphy' },
   { id: 'ems-felix', name: 'Felix Architectural Cursive', category: 'handwriting', badge: 'Flowing Script' },
-  { id: 'handwriting-rose', name: 'Quietly Rose Script', category: 'handwriting', badge: 'Romantic Script' },
-  { id: 'handwriting-flighty', name: 'Flighty Bouncy Hand', category: 'handwriting', badge: 'Bouncy Script' },
-  { id: 'handwriting-antically', name: 'Antically Monoline', category: 'handwriting', badge: 'Fine Monoline' },
-  { id: 'handwriting-monstera', name: 'Monstera Signature', category: 'handwriting', badge: 'Signature' },
-  { id: 'handwriting-backstay', name: 'Backstay Expressive', category: 'handwriting', badge: 'Expressive' },
-  { id: 'handwriting-youth', name: 'Only Youth Print', category: 'handwriting', badge: 'Youthful' },
-  { id: 'handwriting-signature', name: 'Signature Cursive', category: 'handwriting', badge: 'Cursive' },
-  { id: 'handwriting-casual', name: 'Casual Note Hand', category: 'handwriting', badge: 'Handwriting' },
-  { id: 'handwriting-architect', name: 'Architect Drafting Hand', category: 'handwriting', badge: 'Drafting' },
-  { id: 'hershey-script', name: 'Hershey Script', category: 'handwriting', badge: 'Script' },
+  { id: 'handwriting-youth', name: 'Nixish Typewriter Print', category: 'handwriting', badge: 'Vintage Monoline' },
+  { id: 'handwriting-backstay', name: 'Nixish Slanted Monoline', category: 'handwriting', badge: 'Slanted Monoline' },
+  { id: 'handwriting-monstera', name: 'Classic Signature Script', category: 'handwriting', badge: 'Autograph Loops' },
+  { id: 'gothic-english', name: 'Old English Blackletter', category: 'handwriting', badge: 'Medieval Gothic' },
+  { id: 'handwriting-casual', name: 'Casual Note Hand', category: 'handwriting', badge: 'Relaxed Hand' },
 
-  // 📐 Single-Stroke Technical & Geometric
-  { id: 'ems-readability', name: 'Readability Modern Sans', category: 'technical', badge: 'Clean Single Line' },
-  { id: 'ems-tech', name: 'Precision CAD Single-Stroke', category: 'technical', badge: 'Technical CAD' },
-  { id: 'hershey-soft-round', name: 'Modern Soft Rounded', category: 'technical', badge: 'Single Line' },
-  { id: 'hershey-simplex', name: 'Technical Sans', category: 'technical', badge: 'Single Line' },
-  { id: 'hershey-drafting', name: 'Architect CAD', category: 'technical', badge: 'Single Line' },
-  { id: 'hershey-serif', name: 'Roman Serif', category: 'technical', badge: 'Single Line' },
-  { id: 'hershey-italic', name: 'Executive Italic', category: 'technical', badge: 'Single Line' },
+  // 📐 Single-Stroke Technical, Geometric & Retro
+  { id: 'ems-osmotron', name: 'Osmotron Geometric Sci-Fi', category: 'technical', badge: 'NASA Retro' },
+  { id: 'ems-readability', name: 'Readability Modern Sans', category: 'technical', badge: 'Adobe Source Sans' },
+  { id: 'ems-tech', name: 'Precision CAD Drafting', category: 'technical', badge: 'Technical ISO/ANSI' },
+  { id: 'hershey-serif', name: 'Classical Roman Serif', category: 'technical', badge: 'Book Serif' },
+  { id: 'hershey-italic', name: 'Executive Italic', category: 'technical', badge: 'Dynamic Slant' },
+  { id: 'hershey-simplex', name: 'Minimalist Line Sans', category: 'technical', badge: 'Clean Stick' },
 ];
 
 /**
