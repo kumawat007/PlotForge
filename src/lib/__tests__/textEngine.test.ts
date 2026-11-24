@@ -286,4 +286,28 @@ describe('Hershey Text Engine & Corner-Cusp Detection', () => {
       signatureSet.add(sig);
     }
   });
+
+  it('renders spaces between words cleanly without any question marks or unwanted strokes', () => {
+    const textWithSpaces = 'Felix Architectural Cursive';
+    const polys = renderSingleStrokeText(textWithSpaces, {
+      fontSizeMm: 10,
+      fontFamily: 'ems-felix',
+    });
+
+    // Felix '?' glyph has 2 strokes, but space should contribute 0 strokes.
+    // Also verify no question marks were rendered.
+    const questionGlyphStrokes = renderSingleStrokeText('?', {
+      fontSizeMm: 10,
+      fontFamily: 'ems-felix',
+    });
+    expect(questionGlyphStrokes.length).toBeGreaterThan(0);
+
+    // Render without spaces
+    const noSpaces = renderSingleStrokeText('FelixArchitecturalCursive', {
+      fontSizeMm: 10,
+      fontFamily: 'ems-felix',
+    });
+    // The stroke count of "Felix Architectural Cursive" must EXACTLY match "FelixArchitecturalCursive"
+    expect(polys.length).toBe(noSpaces.length);
+  });
 });

@@ -289,7 +289,12 @@ export function renderSingleStrokeText(
     let width = 0;
     for (let i = 0; i < line.length; i++) {
       const char = line[i];
-      const glyph: HersheyGlyph = font[char] || font['?'] || { width: 14, strokes: [] };
+      let glyph: HersheyGlyph;
+      if (char === ' ' || char === '\t' || char === '\u00A0') {
+        glyph = font[' '] || { width: font['n']?.width || 12, strokes: [] };
+      } else {
+        glyph = font[char] || font['?'] || { width: 14, strokes: [] };
+      }
       width += glyph.width * scale;
       if (i < line.length - 1) {
         width += charSpacingMm;
@@ -326,7 +331,12 @@ export function renderSingleStrokeText(
 
     for (let charIdx = 0; charIdx < line.length; charIdx++) {
       const char = line[charIdx];
-      const glyph: HersheyGlyph = font[char] || font['?'] || { width: 14, strokes: [] };
+      let glyph: HersheyGlyph;
+      if (char === ' ' || char === '\t' || char === '\u00A0') {
+        glyph = font[' '] || { width: font['n']?.width || 12, strokes: [] };
+      } else {
+        glyph = font[char] || font['?'] || { width: 14, strokes: [] };
+      }
 
       const charStrokes: Point2D[][] = [];
 
