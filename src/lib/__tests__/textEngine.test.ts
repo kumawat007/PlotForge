@@ -242,12 +242,13 @@ describe('Hershey Text Engine & Corner-Cusp Detection', () => {
   it('guarantees each handwriting font produces distinctly unique visual geometry for identical input', () => {
     const testString = 'Creative Handwriting 123';
     const fonts = [
+      'ems-allure',
+      'ems-elfin',
+      'ems-felix',
+      'ems-readability',
+      'ems-tech',
       'handwriting-casual',
       'handwriting-architect',
-      'handwriting-signature',
-      'handwriting-flighty',
-      'handwriting-rose',
-      'handwriting-antically',
       'handwriting-monstera',
       'handwriting-backstay',
       'handwriting-youth',

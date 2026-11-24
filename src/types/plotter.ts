@@ -129,6 +129,11 @@ export interface PenMountPreset {
 }
 
 export type BuiltinFontFamilyId =
+  | 'ems-allure'
+  | 'ems-elfin'
+  | 'ems-felix'
+  | 'ems-readability'
+  | 'ems-tech'
   | 'hershey-simplex'
   | 'hershey-script'
   | 'hershey-drafting'

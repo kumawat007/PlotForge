@@ -21,10 +21,13 @@ export interface BuiltinFont {
 }
 
 const BUILTIN_FONTS: BuiltinFont[] = [
-  // ✍️ Single-Stroke Handwriting & Script (Open Contour)
-  { id: 'handwriting-antically', name: 'Antically Monoline', category: 'handwriting', badge: 'Fine Monoline' },
-  { id: 'handwriting-flighty', name: 'Flighty Bouncy Hand', category: 'handwriting', badge: 'Bouncy Script' },
+  // ✍️ Single-Stroke Calligraphy & Handwriting (Open Contour - AxiDraw & Pen Plotter)
+  { id: 'ems-allure', name: 'Allura Cursive Script', category: 'handwriting', badge: 'True Cursive' },
+  { id: 'ems-elfin', name: 'Elfin Calligraphic Hand', category: 'handwriting', badge: 'Calligraphy' },
+  { id: 'ems-felix', name: 'Felix Architectural Cursive', category: 'handwriting', badge: 'Flowing Script' },
   { id: 'handwriting-rose', name: 'Quietly Rose Script', category: 'handwriting', badge: 'Romantic Script' },
+  { id: 'handwriting-flighty', name: 'Flighty Bouncy Hand', category: 'handwriting', badge: 'Bouncy Script' },
+  { id: 'handwriting-antically', name: 'Antically Monoline', category: 'handwriting', badge: 'Fine Monoline' },
   { id: 'handwriting-monstera', name: 'Monstera Signature', category: 'handwriting', badge: 'Signature' },
   { id: 'handwriting-backstay', name: 'Backstay Expressive', category: 'handwriting', badge: 'Expressive' },
   { id: 'handwriting-youth', name: 'Only Youth Print', category: 'handwriting', badge: 'Youthful' },
@@ -34,6 +37,8 @@ const BUILTIN_FONTS: BuiltinFont[] = [
   { id: 'hershey-script', name: 'Hershey Script', category: 'handwriting', badge: 'Script' },
 
   // 📐 Single-Stroke Technical & Geometric
+  { id: 'ems-readability', name: 'Readability Modern Sans', category: 'technical', badge: 'Clean Single Line' },
+  { id: 'ems-tech', name: 'Precision CAD Single-Stroke', category: 'technical', badge: 'Technical CAD' },
   { id: 'hershey-soft-round', name: 'Modern Soft Rounded', category: 'technical', badge: 'Single Line' },
   { id: 'hershey-simplex', name: 'Technical Sans', category: 'technical', badge: 'Single Line' },
   { id: 'hershey-drafting', name: 'Architect CAD', category: 'technical', badge: 'Single Line' },

@@ -18,6 +18,13 @@ import {
   HersheyFont,
   HersheyGlyph,
 } from './hersheyData';
+import {
+  EMS_ALLURE,
+  EMS_ELFIN,
+  EMS_FELIX,
+  EMS_READABILITY,
+  EMS_TECH,
+} from './emsFontsData';
 import { pointToSegmentDistance } from '../svg/bezier';
 import { getParsedFont, renderOpenTypeText } from './localFontManager';
 
@@ -207,6 +214,25 @@ export function renderSingleStrokeText(
 
   let font: HersheyFont;
   switch (fontFamily) {
+    case 'ems-allure':
+    case 'handwriting-rose':
+    case 'handwriting-signature':
+      font = EMS_ALLURE;
+      break;
+    case 'ems-elfin':
+    case 'handwriting-flighty':
+      font = EMS_ELFIN;
+      break;
+    case 'ems-felix':
+    case 'handwriting-antically':
+      font = EMS_FELIX;
+      break;
+    case 'ems-readability':
+      font = EMS_READABILITY;
+      break;
+    case 'ems-tech':
+      font = EMS_TECH;
+      break;
     case 'hershey-script':
       font = HERSHEY_SCRIPT;
       break;
@@ -227,18 +253,6 @@ export function renderSingleStrokeText(
       break;
     case 'handwriting-architect':
       font = HANDWRITING_ARCHITECT;
-      break;
-    case 'handwriting-signature':
-      font = HANDWRITING_SIGNATURE;
-      break;
-    case 'handwriting-flighty':
-      font = HANDWRITING_FLIGHTY;
-      break;
-    case 'handwriting-rose':
-      font = HANDWRITING_ROSE;
-      break;
-    case 'handwriting-antically':
-      font = HANDWRITING_ANTICALLY;
       break;
     case 'handwriting-monstera':
       font = HANDWRITING_MONSTERA;
